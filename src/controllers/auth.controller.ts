@@ -1,14 +1,22 @@
 import { CookieOptions, NextFunction, Request, Response } from 'express';
+import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
-import { LoginUserInput, RegisterUserInput } from '../schemas/user.schema';
+import {
+  LoginUserInput,
+  RegisterUserInput,
+  VerifyEmailInput,
+} from '../schemas/user.schema';
 import {
   createUser,
+  findUser,
   findUserByEmail,
   signTokens,
+  updateUser,
 } from '../services/user.service';
 import { Prisma } from '@prisma/client';
 import config from 'config';
 import AppError from '../utils/appError';
+import Email from '../utils/email';
 
 const cookiesOptions: CookieOptions = {
   httpOnly: true,
@@ -47,12 +55,33 @@ export const registerUserHandler = async (
       password: hashedPassword,
     });
 
-    res.status(201).json({
-      status: 'success',
-      data: {
-        user,
-      },
-    });
+    const hashedCode = crypto.randomBytes(32).toString('hex');
+    const verificationCode = crypto
+      .createHash('sha256')
+      .update(hashedCode)
+      .digest('hex');
+
+    // Send Verification Email
+    const redirectUrl = `${config.get<string>(
+      'origin'
+    )}/verifyemail/${hashedCode}`;
+
+    try {
+      await new Email(user, redirectUrl).sendVerificationCode();
+
+      await updateUser({ email: user.email }, { verificationCode });
+
+      res.status(201).json({
+        status: 'success',
+        message: 'Verification token has been sent to your email',
+      });
+    } catch (error) {
+      await updateUser({ email: user.email }, { verificationCode: null });
+      return res.status(500).json({
+        status: 'error',
+        message: 'There was a problem sending email, please try again',
+      });
+    }
   } catch (err: any) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       if (err.code === 'P2002') {
@@ -92,6 +121,32 @@ export const loginUserHandler = async (
     res.status(200).json({
       status: 'success',
       access_token,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const verifyEmailHandler = async (
+  req: Request<VerifyEmailInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const verificationCode = crypto
+      .createHash('sha256')
+      .update(req.params.verificationCode)
+      .digest('hex');
+
+    const user = await updateUser({ verificationCode }, { verified: true });
+
+    if (!user) {
+      return next(new AppError(400, 'Could not verify email'));
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Email verified successfully',
     });
   } catch (err: any) {
     next(err);

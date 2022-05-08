@@ -9,11 +9,25 @@ export const excludedFields = ['password', 'verified'];
 const prisma = new PrismaClient();
 
 export const createUser = async (input: Prisma.UserCreateInput) => {
-  const user = await prisma.user.create({
+  return await prisma.user.create({
     data: input,
   });
+};
 
-  return omit(user, excludedFields);
+export const updateUser = async (
+  where: Prisma.UserWhereUniqueInput,
+  data: Prisma.UserUpdateInput,
+  select?: Prisma.UserSelect
+) => {
+  return await prisma.user.update({
+    where,
+    select,
+    data,
+  });
+};
+
+export const findUser = async (where?: Prisma.UserWhereInput) => {
+  return await prisma.user.findFirst({ where });
 };
 
 export const findUserByEmail = async (where: Prisma.UserWhereUniqueInput) => {

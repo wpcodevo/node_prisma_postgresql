@@ -1,6 +1,7 @@
 require('dotenv').config();
 import express, { NextFunction, Request, Response, response } from 'express';
 import config from 'config';
+import cors from 'cors';
 import validateEnv from './utils/validateEnv';
 import { PrismaClient } from '@prisma/client';
 import authRouter from './routes/auth.routes';
@@ -12,8 +13,20 @@ const prisma = new PrismaClient();
 const app = express();
 
 async function bootstrap() {
+  // TEMPLATE ENGINE
+  app.set('view engine', 'pug');
+  app.set('views', `${__dirname}/views`);
+
   // MIDDLEWARE
   app.use(express.json({ limit: '10kb' }));
+
+  // 1. Cors
+  app.use(
+    cors({
+      origin: [config.get<string>('origin')],
+      credentials: true,
+    })
+  );
 
   // ROUTES
   app.use('/api/auth', authRouter);
