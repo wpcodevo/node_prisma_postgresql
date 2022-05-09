@@ -4,7 +4,7 @@ import config from 'config';
 import redisClient from '../utils/connectRedis';
 import { signJwt } from '../utils/jwt';
 
-export const excludedFields = ['password', 'verified'];
+export const excludedFields = ['password', 'verified', 'verificationCode'];
 
 const prisma = new PrismaClient();
 
@@ -16,7 +16,7 @@ export const createUser = async (input: Prisma.UserCreateInput) => {
   return omit(user, excludedFields);
 };
 
-export const findUserByEmail = async (where: Prisma.UserWhereUniqueInput) => {
+export const findUniqueUser = async (where: Prisma.UserWhereUniqueInput) => {
   return await prisma.user.findUnique({
     where,
   });

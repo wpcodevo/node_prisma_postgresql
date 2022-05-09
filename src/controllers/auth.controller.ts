@@ -3,12 +3,13 @@ import bcrypt from 'bcryptjs';
 import { LoginUserInput, RegisterUserInput } from '../schemas/user.schema';
 import {
   createUser,
-  findUserByEmail,
+  findUniqueUser,
   signTokens,
 } from '../services/user.service';
 import { Prisma } from '@prisma/client';
 import config from 'config';
 import AppError from '../utils/appError';
+import redisClient from '../utils/connectRedis';
 
 const cookiesOptions: CookieOptions = {
   httpOnly: true,
@@ -74,7 +75,7 @@ export const loginUserHandler = async (
   try {
     const { email, password } = req.body;
 
-    const user = await findUserByEmail({ email });
+    const user = await findUniqueUser({ email });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return next(new AppError(400, 'Invalid email or password'));
@@ -92,6 +93,29 @@ export const loginUserHandler = async (
     res.status(200).json({
       status: 'success',
       access_token,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+function logout(res: Response) {
+  res.cookie('access_token', '', { maxAge: 1 });
+  res.cookie('refresh_token', '', { maxAge: 1 });
+  res.cookie('logged_in', '', { maxAge: 1 });
+}
+
+export const logoutUserHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await redisClient.del(res.locals.user.id);
+    logout(res);
+
+    res.status(200).json({
+      status: 'success',
     });
   } catch (err: any) {
     next(err);
