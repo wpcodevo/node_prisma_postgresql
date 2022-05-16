@@ -39,12 +39,6 @@ export const loginUserSchema = object({
   }),
 });
 
-export const verifyEmailSchema = object({
-  params: object({
-    verificationCode: string(),
-  }),
-});
-
 export const updateUserSchema = object({
   body: object({
     name: string({}),
@@ -68,5 +62,4 @@ export type RegisterUserInput = Omit<
 >;
 
 export type LoginUserInput = TypeOf<typeof loginUserSchema>['body'];
-export type VerifyEmailInput = TypeOf<typeof verifyEmailSchema>['params'];
 export type UpdateUserInput = TypeOf<typeof updateUserSchema>['body'];
