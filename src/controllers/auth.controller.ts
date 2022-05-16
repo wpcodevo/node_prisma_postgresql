@@ -1,6 +1,5 @@
 import crypto from 'crypto';
 import { CookieOptions, NextFunction, Request, Response } from 'express';
-import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import {
   LoginUserInput,
@@ -9,24 +8,16 @@ import {
 } from '../schemas/user.schema';
 import {
   createUser,
-<<<<<<< HEAD
-  findUser,
-  findUserByEmail,
-=======
   findUniqueUser,
   findUser,
->>>>>>> jwt_auth_verify_email
   signTokens,
   updateUser,
 } from '../services/user.service';
 import { Prisma } from '@prisma/client';
 import config from 'config';
 import AppError from '../utils/appError';
-<<<<<<< HEAD
-=======
 import redisClient from '../utils/connectRedis';
 import { signJwt, verifyJwt } from '../utils/jwt';
->>>>>>> jwt_auth_verify_email
 import Email from '../utils/email';
 
 const cookiesOptions: CookieOptions = {
@@ -73,33 +64,6 @@ export const registerUserHandler = async (
       verificationCode,
     });
 
-<<<<<<< HEAD
-    const hashedCode = crypto.randomBytes(32).toString('hex');
-    const verificationCode = crypto
-      .createHash('sha256')
-      .update(hashedCode)
-      .digest('hex');
-
-    // Send Verification Email
-    const redirectUrl = `${config.get<string>(
-      'origin'
-    )}/verifyemail/${hashedCode}`;
-
-    try {
-      await new Email(user, redirectUrl).sendVerificationCode();
-
-      await updateUser({ email: user.email }, { verificationCode });
-
-      res.status(201).json({
-        status: 'success',
-        message: 'Verification token has been sent to your email',
-      });
-    } catch (error) {
-      await updateUser({ email: user.email }, { verificationCode: null });
-      return res.status(500).json({
-        status: 'error',
-        message: 'There was a problem sending email, please try again',
-=======
     const redirectUrl = `${config.get<string>(
       'origin'
     )}/verifyemail/${verifyCode}`;
@@ -117,7 +81,6 @@ export const registerUserHandler = async (
       return res.status(500).json({
         status: 'error',
         message: 'There was an error sending email, please try again',
->>>>>>> jwt_auth_verify_email
       });
     }
   } catch (err: any) {
@@ -182,8 +145,6 @@ export const loginUserHandler = async (
   }
 };
 
-<<<<<<< HEAD
-=======
 export const refreshAccessTokenHandler = async (
   req: Request,
   res: Response,
@@ -267,7 +228,6 @@ export const logoutUserHandler = async (
   }
 };
 
->>>>>>> jwt_auth_verify_email
 export const verifyEmailHandler = async (
   req: Request<VerifyEmailInput>,
   res: Response,
@@ -279,12 +239,6 @@ export const verifyEmailHandler = async (
       .update(req.params.verificationCode)
       .digest('hex');
 
-<<<<<<< HEAD
-    const user = await updateUser({ verificationCode }, { verified: true });
-
-    if (!user) {
-      return next(new AppError(400, 'Could not verify email'));
-=======
     const user = await updateUser(
       { verificationCode },
       { verified: true, verificationCode: null },
@@ -293,7 +247,6 @@ export const verifyEmailHandler = async (
 
     if (!user) {
       return next(new AppError(401, 'Could not verify email'));
->>>>>>> jwt_auth_verify_email
     }
 
     res.status(200).json({
@@ -301,15 +254,12 @@ export const verifyEmailHandler = async (
       message: 'Email verified successfully',
     });
   } catch (err: any) {
-<<<<<<< HEAD
-=======
     if (err.code === 'P2025') {
       return res.status(403).json({
         status: 'fail',
         message: `Verification code is invalid or user doesn't exist`,
       });
     }
->>>>>>> jwt_auth_verify_email
     next(err);
   }
 };

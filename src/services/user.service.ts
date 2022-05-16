@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma, User } from '@prisma/client';
-import { omit } from 'lodash';
 import config from 'config';
 import redisClient from '../utils/connectRedis';
 import { signJwt } from '../utils/jwt';
@@ -9,31 +8,9 @@ export const excludedFields = ['password', 'verified', 'verificationCode'];
 const prisma = new PrismaClient();
 
 export const createUser = async (input: Prisma.UserCreateInput) => {
-<<<<<<< HEAD
-  return await prisma.user.create({
-    data: input,
-  });
-};
-
-export const updateUser = async (
-  where: Prisma.UserWhereUniqueInput,
-  data: Prisma.UserUpdateInput,
-  select?: Prisma.UserSelect
-) => {
-  return await prisma.user.update({
-    where,
-    select,
-    data,
-  });
-};
-
-export const findUser = async (where?: Prisma.UserWhereInput) => {
-  return await prisma.user.findFirst({ where });
-=======
   return (await prisma.user.create({
     data: input,
   })) as User;
->>>>>>> jwt_auth_verify_email
 };
 
 export const findUser = async (
