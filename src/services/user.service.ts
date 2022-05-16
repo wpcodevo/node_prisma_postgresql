@@ -1,14 +1,15 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, User } from '@prisma/client';
 import { omit } from 'lodash';
 import config from 'config';
 import redisClient from '../utils/connectRedis';
 import { signJwt } from '../utils/jwt';
 
-export const excludedFields = ['password', 'verified'];
+export const excludedFields = ['password', 'verified', 'verificationCode'];
 
 const prisma = new PrismaClient();
 
 export const createUser = async (input: Prisma.UserCreateInput) => {
+<<<<<<< HEAD
   return await prisma.user.create({
     data: input,
   });
@@ -28,12 +29,39 @@ export const updateUser = async (
 
 export const findUser = async (where?: Prisma.UserWhereInput) => {
   return await prisma.user.findFirst({ where });
+=======
+  return (await prisma.user.create({
+    data: input,
+  })) as User;
+>>>>>>> jwt_auth_verify_email
 };
 
-export const findUserByEmail = async (where: Prisma.UserWhereUniqueInput) => {
-  return await prisma.user.findUnique({
+export const findUser = async (
+  where: Partial<Prisma.UserCreateInput>,
+  select?: Prisma.UserSelect
+) => {
+  return (await prisma.user.findFirst({
     where,
-  });
+    select,
+  })) as User;
+};
+
+export const findUniqueUser = async (
+  where: Prisma.UserWhereUniqueInput,
+  select?: Prisma.UserSelect
+) => {
+  return (await prisma.user.findUnique({
+    where,
+    select,
+  })) as User;
+};
+
+export const updateUser = async (
+  where: Partial<Prisma.UserCreateInput>,
+  data: Prisma.UserUpdateInput,
+  select?: Prisma.UserSelect
+) => {
+  return (await prisma.user.update({ where, data, select })) as User;
 };
 
 export const signTokens = async (user: Prisma.UserCreateInput) => {
