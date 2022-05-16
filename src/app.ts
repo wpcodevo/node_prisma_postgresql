@@ -16,6 +16,10 @@ const prisma = new PrismaClient();
 const app = express();
 
 async function bootstrap() {
+  // TEMPLATE ENGINE
+  app.set('view engine', 'pug');
+  app.set('views', `${__dirname}/views`);
+
   // MIDDLEWARE
 
   // 1.Body Parser
@@ -38,6 +42,14 @@ async function bootstrap() {
   // ROUTES
   app.use('/api/auth', authRouter);
   app.use('/api/users', userRouter);
+
+  // Testing
+  app.get('/api/healthchecker', (_, res: Response) => {
+    res.status(200).json({
+      status: 'success',
+      message: 'Welcome to NodeJs with Prisma and PostgreSQL',
+    });
+  });
 
   // UNHANDLED ROUTES
   app.all('*', (req: Request, res: Response, next: NextFunction) => {

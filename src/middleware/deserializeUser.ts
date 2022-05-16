@@ -55,7 +55,6 @@ export const deserializeUser = async (
 
     next();
   } catch (err: any) {
-    console.log(err);
     next(err);
   }
 };

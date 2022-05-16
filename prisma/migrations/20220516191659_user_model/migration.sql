@@ -10,6 +10,7 @@ CREATE TABLE "users" (
     "verified" BOOLEAN DEFAULT false,
     "password" TEXT NOT NULL,
     "role" "RoleEnumType" DEFAULT E'user',
+    "verificationCode" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -18,3 +19,9 @@ CREATE TABLE "users" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_verificationCode_key" ON "users"("verificationCode");
+
+-- CreateIndex
+CREATE INDEX "users_email_verificationCode_idx" ON "users"("email", "verificationCode");

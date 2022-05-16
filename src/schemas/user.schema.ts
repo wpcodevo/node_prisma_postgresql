@@ -39,9 +39,34 @@ export const loginUserSchema = object({
   }),
 });
 
+export const verifyEmailSchema = object({
+  params: object({
+    verificationCode: string(),
+  }),
+});
+
+export const updateUserSchema = object({
+  body: object({
+    name: string({}),
+    email: string({}).email('Invalid email address'),
+    password: string({})
+      .min(8, 'Password must be more than 8 characters')
+      .max(32, 'Password must be less than 32 characters'),
+    passwordConfirm: string({}),
+    role: z.optional(z.nativeEnum(RoleEnumType)),
+  })
+    .partial()
+    .refine((data) => data.password === data.passwordConfirm, {
+      path: ['passwordConfirm'],
+      message: 'Passwords do not match',
+    }),
+});
+
 export type RegisterUserInput = Omit<
   TypeOf<typeof registerUserSchema>['body'],
   'passwordConfirm'
 >;
 
 export type LoginUserInput = TypeOf<typeof loginUserSchema>['body'];
+export type VerifyEmailInput = TypeOf<typeof verifyEmailSchema>['params'];
+export type UpdateUserInput = TypeOf<typeof updateUserSchema>['body'];
