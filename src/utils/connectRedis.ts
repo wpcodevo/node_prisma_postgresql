@@ -10,7 +10,7 @@ const connectRedis = async () => {
   try {
     await redisClient.connect();
     console.log('Redis client connect successfully');
-    redisClient.set('try', 'Hello Welcome to Express with TypeORM');
+    redisClient.set('try', 'Welcome to Express and TypeScript with Prisma');
   } catch (error) {
     console.log(error);
     setTimeout(connectRedis, 5000);
