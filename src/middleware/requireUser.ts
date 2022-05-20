@@ -11,7 +11,7 @@ export const requireUser = (
 
     if (!user) {
       return next(
-        new AppError(400, `Session has expired or user doesn't exist`)
+        new AppError(401, `Session has expired or user doesn't exist`)
       );
     }
 

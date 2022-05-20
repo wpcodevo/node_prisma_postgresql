@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { LoginUserInput, RegisterUserInput } from '../schemas/user.schema';
 import {
   createUser,
+  excludedFields,
   findUniqueUser,
   signTokens,
 } from '../services/user.service';
@@ -12,6 +13,7 @@ import config from 'config';
 import AppError from '../utils/appError';
 import redisClient from '../utils/connectRedis';
 import { signJwt, verifyJwt } from '../utils/jwt';
+import { omit } from 'lodash';
 
 const cookiesOptions: CookieOptions = {
   httpOnly: true,
@@ -57,10 +59,12 @@ export const registerUserHandler = async (
       verificationCode,
     });
 
+    const newUser = omit(user, excludedFields);
+
     res.status(201).json({
       status: 'success',
       data: {
-        user,
+        user: newUser,
       },
     });
   } catch (err: any) {
@@ -172,9 +176,9 @@ export const refreshAccessTokenHandler = async (
 };
 
 function logout(res: Response) {
-  res.cookie('access_token', '', { maxAge: 1 });
-  res.cookie('refresh_token', '', { maxAge: 1 });
-  res.cookie('logged_in', '', { maxAge: 1 });
+  res.cookie('access_token', '', { maxAge: -1 });
+  res.cookie('refresh_token', '', { maxAge: -1 });
+  res.cookie('logged_in', '', { maxAge: -1 });
 }
 
 export const logoutUserHandler = async (
