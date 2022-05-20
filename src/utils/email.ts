@@ -51,8 +51,9 @@ export default class Email {
     };
 
     // Send email
-    const info = await this.newTransport().sendMail(mailOptions);
-    console.log(nodemailer.getTestMessageUrl(info));
+    // const info = await this.newTransport().sendMail(mailOptions);
+    // console.log(nodemailer.getTestMessageUrl(info));
+    await this.newTransport().sendMail(mailOptions);
   }
 
   async sendVerificationCode() {
