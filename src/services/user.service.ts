@@ -35,7 +35,7 @@ export const findUniqueUser = async (
 };
 
 export const updateUser = async (
-  where: Partial<Prisma.UserCreateInput>,
+  where: Partial<Prisma.UserWhereUniqueInput>,
   data: Prisma.UserUpdateInput,
   select?: Prisma.UserSelect
 ) => {
