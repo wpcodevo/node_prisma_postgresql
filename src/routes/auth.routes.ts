@@ -36,13 +36,13 @@ router.get(
 router.get('/logout', deserializeUser, requireUser, logoutUserHandler);
 
 router.post(
-  '/forgotPassword',
+  '/forgotpassword',
   validate(forgotPasswordSchema),
   forgotPasswordHandler
 );
 
 router.patch(
-  '/resetPassword/:resetToken',
+  '/resetpassword/:resetToken',
   validate(resetPasswordSchema),
   resetPasswordHandler
 );

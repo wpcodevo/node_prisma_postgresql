@@ -11,3 +11,7 @@
 ### 3. CRUD API with Node.js and PostgreSQL: Send HTML Emails
 
 [CRUD API with Node.js and PostgreSQL: Send HTML Emails](https://codevoweb.com/crud-api-node-js-and-postgresql-send-html-emails)
+
+### 4. API with Node.js, Prisma & PostgreSQL: Forget/Reset Password
+
+[API with Node.js, Prisma & PostgreSQL: Forget/Reset Password](https://codevoweb.com/crud-api-node-prisma-postgresql-reset-password)
