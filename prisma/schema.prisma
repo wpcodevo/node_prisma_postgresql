@@ -25,8 +25,12 @@ model User{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([email, verificationCode])
-  @@index([email, verificationCode])
+  provider String?
+  passwordResetToken String?
+  passwordResetAt DateTime?
+
+  @@unique([email, verificationCode, passwordResetToken])
+  @@index([email, verificationCode,passwordResetToken])
 }
 
 enum RoleEnumType {

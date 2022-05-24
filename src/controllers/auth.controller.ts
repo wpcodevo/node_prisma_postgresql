@@ -2,8 +2,10 @@ import crypto from 'crypto';
 import { CookieOptions, NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import {
+  ForgotPasswordInput,
   LoginUserInput,
   RegisterUserInput,
+  ResetPasswordInput,
   VerifyEmailInput,
 } from '../schemas/user.schema';
 import {
@@ -260,6 +262,135 @@ export const verifyEmailHandler = async (
         message: `Verification code is invalid or user doesn't exist`,
       });
     }
+    next(err);
+  }
+};
+
+export const forgotPasswordHandler = async (
+  req: Request<
+    Record<string, never>,
+    Record<string, never>,
+    ForgotPasswordInput
+  >,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // Get the user from the collection
+    const user = await findUser({ email: req.body.email.toLowerCase() });
+    const message =
+      'You will receive a reset email if user with that email exist';
+    if (!user) {
+      return res.status(200).json({
+        status: 'success',
+        message,
+      });
+    }
+
+    if (!user.verified) {
+      return res.status(403).json({
+        status: 'fail',
+        message: 'Account not verified',
+      });
+    }
+
+    if (user.provider) {
+      return res.status(403).json({
+        status: 'fail',
+        message:
+          'We found your account. It looks like you registered with a social auth account. Try signing in with social auth.',
+      });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const passwordResetToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+
+    await updateUser(
+      { id: user.id },
+      {
+        passwordResetToken,
+        passwordResetAt: new Date(Date.now() + 10 * 60 * 1000),
+      },
+      { email: true }
+    );
+
+    try {
+      const url = `${config.get<string>('origin')}/resetpassword/${resetToken}`;
+      await new Email(user, url).sendPasswordResetToken();
+
+      res.status(200).json({
+        status: 'success',
+        message,
+      });
+    } catch (err: any) {
+      await updateUser(
+        { id: user.id },
+        { passwordResetToken: null, passwordResetAt: null },
+        {}
+      );
+      return res.status(500).json({
+        status: 'error',
+        message: 'There was an error sending email',
+      });
+    }
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const resetPasswordHandler = async (
+  req: Request<
+    ResetPasswordInput['params'],
+    Record<string, never>,
+    ResetPasswordInput['body']
+  >,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // Get the user from the collection
+    const passwordResetToken = crypto
+      .createHash('sha256')
+      .update(req.params.resetToken)
+      .digest('hex');
+
+    const user = await findUser({
+      passwordResetToken,
+      passwordResetAt: {
+        gt: new Date(),
+      },
+    });
+
+    if (!user) {
+      return res.status(403).json({
+        status: 'fail',
+        message: 'Invalid token or token has expired',
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 12);
+    // Change password data
+    await updateUser(
+      {
+        id: user.id,
+      },
+      {
+        password: hashedPassword,
+        passwordResetToken: null,
+        passwordResetAt: null,
+      },
+      { email: true }
+    );
+
+    logout(res);
+    res.status(200).json({
+      status: 'success',
+      message: 'Password data updated successfully',
+    });
+  } catch (err: any) {
     next(err);
   }
 };
