@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only --exit-child src/app.ts",
-    "migrate": "npx prisma migrate dev --name $npm_config_name && npx prisma generate",
+    "migrate": "npx prisma migrate dev --name user-entity && npx prisma generate",
+    "db:push": "npx prisma db push",
     "build": "tsc . -p"
   },
   "devDependencies": {
