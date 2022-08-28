@@ -10,6 +10,12 @@ import authRouter from './routes/auth.routes';
 import userRouter from './routes/user.routes';
 import AppError from './utils/appError';
 
+// import nodemailer from 'nodemailer';
+// (async function () {
+//   const credentials = await nodemailer.createTestAccount();
+//   console.log(credentials);
+// })();
+
 validateEnv();
 
 const prisma = new PrismaClient();
