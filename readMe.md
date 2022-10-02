@@ -1,6 +1,6 @@
 # Node.js API with Prisma, TypeScript, and PostgreSQL
 
-## Node.js API with Prisma, TypeScript, and PostgreSQL
+## Setup Node.js API with Prisma, TypeScript, and PostgreSQL
 
 ![Setup Node.js API with Prisma, TypeScript, and PostgreSQL](https://codevoweb.com/wp-content/uploads/2022/05/API-Node.js-TypeScript-Prisma-PostgreSQL-Project-Setup.webp)
 
