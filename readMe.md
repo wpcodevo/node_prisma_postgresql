@@ -1,8 +1,8 @@
 # Setup Node.js API with Prisma, TypeScript, and PostgreSQL
 
-![Setup Node.js API with Prisma, TypeScript, and PostgreSQL](https://codevoweb.com/wp-content/uploads/2022/05/API-Node.js-TypeScript-Prisma-PostgreSQL-Project-Setup.webp)
-
 In this comprehensive article, you'll learn how to set up a Node.js API Project with ExpressJs, Prisma, PostgreSQL, Redis, and Docker-compose. The API will run on an Express server and use Postgres for data storage.
+
+![Setup Node.js API with Prisma, TypeScript, and PostgreSQL](https://codevoweb.com/wp-content/uploads/2022/05/API-Node.js-TypeScript-Prisma-PostgreSQL-Project-Setup.webp)
 
 ## Topics Covered
 
