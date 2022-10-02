@@ -1,8 +1,8 @@
 # API with Node.js, Prisma & PostgreSQL: Forget/Reset Password
 
-![API with Node.js, Prisma & PostgreSQL: Forget/Reset Password](https://codevoweb.com/wp-content/uploads/2022/05/API-with-Node.js-Prisma-PostgreSQL-Forget-Reset-Password.webp)
-
 In this article, you'll learn how to implement forget/reset passwords with Node.js, Prisma, PostgreSQL, Nodemailer, Redis, Docker-compose, and Pug. Also, you will learn how to dynamically generate HTML Email templates with Pug and send them via SMTP to the user's Email inbox.
+
+![API with Node.js, Prisma & PostgreSQL: Forget/Reset Password](https://codevoweb.com/wp-content/uploads/2022/05/API-with-Node.js-Prisma-PostgreSQL-Forget-Reset-Password.webp)
 
 ## Topics Covered
 
