@@ -1,8 +1,29 @@
-# CRUD RESTful API Node.js, TypeScript, Prisma, PostgreSQL
+# API with Node.js, Prisma & PostgreSQL: Forget/Reset Password
 
-### 1. API Node.js, TypeScript, Prisma, PostgreSQL: Project Setup
+![API with Node.js, Prisma & PostgreSQL: Forget/Reset Password](https://codevoweb.com/wp-content/uploads/2022/05/API-with-Node.js-Prisma-PostgreSQL-Forget-Reset-Password.webp)
 
-[API Node.js, TypeScript, Prisma, PostgreSQL: Project Setup](https://codevoweb.com/api-node-typescript-prisma-postgresql-project-setup)
+In this article, you'll learn how to implement forget/reset passwords with Node.js, Prisma, PostgreSQL, Nodemailer, Redis, Docker-compose, and Pug. Also, you will learn how to dynamically generate HTML Email templates with Pug and send them via SMTP to the user's Email inbox.
+
+## Topics Covered
+
+- Forget/Reset Password Flow in Node.js
+- Update the Prisma User Model
+- Run the Prisma Migration Command to Update the Database
+- Update the Zod User Schema
+- Create Services to Query and Mutate the Database
+- Create a Utility Class to Send Emails
+- Create Controllers
+    - Forgot Password Controller
+    - Create the Password Reset Controller
+- Add the Routes to the Middleware Pipeline
+
+Read the entire article here: [https://codevoweb.com/crud-api-node-prisma-postgresql-reset-password](https://codevoweb.com/crud-api-node-prisma-postgresql-reset-password)
+
+Articles in this series:
+
+### 1. Setup Node.js API with Prisma, TypeScript, and PostgreSQL
+
+[Setup Node.js API with Prisma, TypeScript, and PostgreSQL](https://codevoweb.com/api-node-typescript-prisma-postgresql-project-setup)
 
 ### 2. Node.js + Prisma + PostgreSQL: Access & Refresh Tokens
 
