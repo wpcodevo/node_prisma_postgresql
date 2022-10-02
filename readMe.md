@@ -1,8 +1,8 @@
 # CRUD API with Node.js and PostgreSQL: Send HTML Emails
 
-![CRUD API with Node.js and PostgreSQL: Send HTML Emails](https://codevoweb.com/wp-content/uploads/2022/05/CRUD-API-with-Node.js-and-PostgreSQL-Send-HTML-Emails.webp)
-
 In this article, you'll learn how to send HTML Emails with Node.js, Nodemailer, Prisma, PostgreSQL, Express, and Docker-compose. We'll create a generic class that can be used to send single or multiple emails at once by chaining the methods together.
+
+![CRUD API with Node.js and PostgreSQL: Send HTML Emails](https://codevoweb.com/wp-content/uploads/2022/05/CRUD-API-with-Node.js-and-PostgreSQL-Send-HTML-Emails.webp)
 
 ## Topics Covered
 
