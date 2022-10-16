@@ -4,7 +4,7 @@ CREATE TYPE "RoleEnumType" AS ENUM ('user', 'admin');
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
     "email" TEXT NOT NULL,
     "photo" TEXT DEFAULT E'default.png',
     "verified" BOOLEAN DEFAULT false,
@@ -25,3 +25,6 @@ CREATE UNIQUE INDEX "users_verificationCode_key" ON "users"("verificationCode");
 
 -- CreateIndex
 CREATE INDEX "users_email_verificationCode_idx" ON "users"("email", "verificationCode");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_verificationCode_key" ON "users"("email", "verificationCode");

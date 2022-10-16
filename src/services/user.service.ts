@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma, User } from '@prisma/client';
-import { omit } from 'lodash';
 import config from 'config';
 import redisClient from '../utils/connectRedis';
 import { signJwt } from '../utils/jwt';
