@@ -1,9 +1,5 @@
 node_modules
 # Keep environment variables out of version control
-.env
-<<<<<<< HEAD
-schema.prisma
-=======
+# .env
 
 build/
->>>>>>> jwt_auth_verify_email
