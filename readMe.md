@@ -21,7 +21,7 @@ Read the entire article here: [https://codevoweb.com/api-node-typescript-prisma-
 
 ![Node.js + Prisma + PostgreSQL: Access & Refresh Tokens](https://codevoweb.com/wp-content/uploads/2022/05/Node.js-Prisma-PostgreSQL-Access-Refresh-Tokens.webp)
 
-In this comprehensive article, you'll learn how to set up a Node.js API Project with ExpressJs, Prisma, PostgreSQL, Redis, and Docker-compose. The API will run on an Express server and use Postgres for data storage.
+In this article, you’ll learn how to implement JWT authentication with access and refresh tokens using Node.js, ExpressJs, Prisma, PostgreSQL, Redis, and Docker-compose.
 
 ### Topics Covered
 
